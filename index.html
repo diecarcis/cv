@@ -2,7 +2,7 @@
 <html lang="en">
 <html>
   <head>
-    <title>Diego Ernesto Camacho Arcis - Curriculum Vitae</title>
+    <title>Diego Ernesto Camacho Arcis - Curriculum</title>
   </head>
   <body>
     <header>
@@ -10,40 +10,7 @@
     </header>
 
     <footer>
-      <p>&copy; 2025 Diego Ernesto Camacho Arcis. Todos los derechos reservados.</p>
+      <p>&copy; Copyright Diego Ernesto Camacho Arcis 2025</p>
     </footer>
-    <script>
-        // Crear burbujas animadas para el fondo
-        function createBubbles() {
-            const bubblesContainer = document.getElementById('bubbles');
-            const bubbleCount = 20;
-            
-            for (let i = 0; i < bubbleCount; i++) {
-                const bubble = document.createElement('div');
-                bubble.classList.add('bubble');
-                
-                // Tamaño aleatorio
-                const size = Math.random() * 100 + 20;
-                bubble.style.width = `${size}px`;
-                bubble.style.height = `${size}px`;
-                
-                // Posición inicial aleatoria
-                bubble.style.left = `${Math.random() * 100}%`;
-                
-                // Duración de animación aleatoria
-                const duration = Math.random() * 20 + 10;
-                bubble.style.animationDuration = `${duration}s`;
-                
-                // Retraso de animación aleatorio
-                const delay = Math.random() * 10;
-                bubble.style.animationDelay = `${delay}s`;
-                
-                bubblesContainer.appendChild(bubble);
-            }
-        }
-        
-        // Inicializar cuando el documento esté listo
-        document.addEventListener('DOMContentLoaded', createBubbles);
-    </script>
   </body>
 </html>
