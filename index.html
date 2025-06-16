@@ -1,18 +1,310 @@
 <!DOCTYPE html>
-<html lang="en">
-<html>
-  <head>
-    <title>title</title>
-  </head>
-  <body>
-    <header>
-      <center><p>Hello, World!</p></center>
-    </header>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fondo Animado Autónomo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            position: relative;
+        }
+        
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .content {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(10, 15, 30, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 90%;
+            z-index: 10;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .highlight {
+            color: #00dbde;
+            font-weight: bold;
+        }
+        
+        .animated-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+        
+        .shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            top: 10%;
+            left: 5%;
+            animation-duration: 20s;
+        }
+        
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, #f5af19, #f12711);
+            top: 70%;
+            left: 80%;
+            animation-duration: 25s;
+        }
+        
+        .shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #654ea3, #eaafc8);
+            top: 30%;
+            left: 75%;
+            animation-duration: 18s;
+        }
+        
+        .shape:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #3494e6, #ec6ead);
+            top: 65%;
+            left: 15%;
+            animation-duration: 22s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, 50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(40px, 0) rotate(180deg);
+            }
+            75% {
+                transform: translate(20px, -50px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+        
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="background-canvas"></canvas>
+    
+    <div class="animated-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <div class="particles" id="particles-container"></div>
 
-    
-    
-    <footer>
-      
-    </footer>
-  </body>
+    <script>
+        // Generador de partículas estelares
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 150;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Posición aleatoria
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                
+                // Tamaño aleatorio
+                const size = 1 + Math.random() * 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Retraso de animación aleatorio
+                const delay = Math.random() * 5;
+                particle.style.animationDelay = `${delay}s`;
+                
+                // Duración de animación aleatoria
+                const duration = 3 + Math.random() * 3;
+                particle.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Animación de degradado con canvas
+        function initCanvasAnimation() {
+            const canvas = document.getElementById('background-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Ajustar tamaño del canvas
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            
+            // Configuración de la animación
+            const colors = [
+                {r: 26, g: 26, b: 46},    // #1a1a2e
+                {r: 22, g: 33, b: 62},     // #16213e
+                {r: 15, g: 52, b: 96},     // #0f3460
+                {r: 0, g: 219, b: 222},    // #00dbde
+                {r: 252, g: 0, b: 255}     // #fc00ff
+            ];
+            
+            let time = 0;
+            const speed = 0.002;
+            const noiseScale = 0.01;
+            
+            // Función de ruido (simplificada)
+            function noise(x, y) {
+                return Math.sin(x * 10 + y * 5 + time) * 0.5 + 0.5;
+            }
+            
+            // Función de animación
+            function animate() {
+                time += speed;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Crear gradiente animado
+                const gradient = ctx.createLinearGradient(
+                    0, 0, 
+                    canvas.width * Math.sin(time * 0.5), 
+                    canvas.height * Math.cos(time * 0.3)
+                );
+                
+                // Puntos de color animados
+                const color1 = colors[Math.floor(Math.abs(Math.sin(time)) * colors.length)];
+                const color2 = colors[Math.floor(Math.abs(Math.cos(time * 1.3)) * colors.length)];
+                
+                gradient.addColorStop(0, `rgb(${color1.r}, ${color1.g}, ${color1.b})`);
+                gradient.addColorStop(1, `rgb(${color2.r}, ${color2.g}, ${color2.b})`);
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Añadir efecto de ruido sutil
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                
+                for (let i = 0; i < data.length; i += 4) {
+                    const x = (i / 4) % canvas.width;
+                    const y = Math.floor((i / 4) / canvas.width);
+                    
+                    const n = noise(x * noiseScale, y * noiseScale);
+                    const intensity = 10;
+                    
+                    data[i] = Math.min(255, Math.max(0, data[i] + (n - 0.5) * intensity));
+                    data[i+1] = Math.min(255, Math.max(0, data[i+1] + (n - 0.5) * intensity));
+                    data[i+2] = Math.min(255, Math.max(0, data[i+2] + (n - 0.5) * intensity));
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
+        // Inicializar todo cuando el documento esté cargado
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            initCanvasAnimation();
+        });
+    </script>
+</body>
 </html>
